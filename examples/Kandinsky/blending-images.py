@@ -3,7 +3,7 @@ start->miniconda3
 conda activate diffusers
 cd Downloads
 cd workspace
-python tools\make_hint.py
+python blending-images.py
 http://localhost:7860
 """
 import torch
@@ -24,29 +24,23 @@ from diffusers import (
 )
 from diffusers.utils import load_image
 
+# for windows
+# from pathlib import Path
+# CACHE_DIR = Path("c:/Users/User/.cache/huggingface/hub")
 MODEL_DTYPE = torch.float16
 LOW_MEMORY = True
 
 # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
 torch.cuda.empty_cache()
 
-##### version 2.1
-# model_prior = "kandinsky-community/kandinsky-2-1-prior"
-# model = "kandinsky-community/kandinsky-2-1"
-
-# pipe_prior = KandinskyPriorPipeline.from_pretrained(model_prior, torch_dtype=MODEL_DTYPE, low_cpu_mem_usage=LOW_MEMORY)
-# pipe_prior.to("cuda")
-#
-# pipe = KandinskyPipeline.from_pretrained(model, torch_dtype=MODEL_DTYPE, low_cpu_mem_usage=LOW_MEMORY)
-# pipe.to("cuda")
-#####
-
 ##### version 2.2
 model_prior = "kandinsky-community/kandinsky-2-2-prior"
 model = "kandinsky-community/kandinsky-2-2-decoder"
 
 pipe_prior = KandinskyV22PriorPipeline.from_pretrained(
-    model_prior, torch_dtype=MODEL_DTYPE, low_cpu_mem_usage=LOW_MEMORY
+    model_prior,
+    torch_dtype=MODEL_DTYPE,
+    low_cpu_mem_usage=LOW_MEMORY,
 )
 # pipe_prior.to("cpu")
 pipe_prior.enable_model_cpu_offload()
